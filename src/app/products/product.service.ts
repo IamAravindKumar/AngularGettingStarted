@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/Operators';
 
 @Injectable({
@@ -9,9 +9,15 @@ import { catchError, tap, map } from 'rxjs/Operators';
 })
 export class ProductService {
   private productUrl = 'api/products/products.json';
+  private currentTabstate = new BehaviorSubject<string>('home');
+  pathName: Observable<string>;
 
   constructor(private http: HttpClient) {
+    this.pathName = this.currentTabstate.asObservable();
+  }
 
+  updateCurrentTabstate(newPath: string): void{
+    this.currentTabstate.next(newPath);
   }
 
   getProducts(): Observable<IProduct[]> {

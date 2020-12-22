@@ -19,6 +19,7 @@ export class ProductDetailComponent implements OnInit {
     if(!isNaN(id) && id > 0){
       this.getProduct(id);
     }
+    this.productService.updateCurrentTabstate('');
   }
 
   getProduct(id: number): void{
